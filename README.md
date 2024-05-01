@@ -1,6 +1,13 @@
 # 🚧 MQTT_MOSQUITTO 🚧
 Então, pessoal, o principal objetivo do repositório é descomplicar a utilização do protocolo MQTT, mostrar as etapas de instalação/configuração, como enviar e receber valores, 
 além de dicas e soluções de possíveis problemas, irei estar utilizando o Broker MOSQUITTO para gerenciamento, mas nada impede de ser outro, porém recomendo iniciar por ele
+</br>
+
+![Badge em Desenvolvimento](https://img.shields.io/badge/MQSQUITTO_VERSÃO-2.0.15-yelow?style=flat-square&link=https%3A%2F%2Fgithub.com%2Fwell1ngt0nso%2Fwell1ngt0nso%2Fblob%2Fmain%2FREADME.md)
+![Badge em Desenvolvimento](https://img.shields.io/badge/MQTT_VERSÃO-3.11-yelow?style=flat-square&link=https%3A%2F%2Fgithub.com%2Fwell1ngt0nso%2Fwell1ngt0nso%2Fblob%2Fmain%2FREADME.md)
+![Badge em Desenvolvimento](https://img.shields.io/badge/INICIATED-2024-blue?style=flat-square&link=https%3A%2F%2Fgithub.com%2Fwell1ngt0nso%2Fwell1ngt0nso%2Fblob%2Fmain%2FREADME.md)
+
+ 
 O que veremos:
 * O que é o protocolo MQTT:
 * O QUE É UM BROKER:
