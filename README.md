@@ -45,3 +45,70 @@ Agora temos outro problema: Quando eu envio um dado para o Broker todos os clien
 * O broker monitora continuamente novas mensagens publicadas nos tópicos.
 * Quando uma nova mensagem é publicada em um tópico, o broker verifica se há clientes inscritos nesse tópico.
 * Se houver clientes inscritos, o broker envia a mensagem para cada um desses clientes
+
+## Instalação
+
+1. **Baixe o Mosquitto MQTT**:
+   - Acesse o [site oficial](https://mosquitto.org/download/) do Mosquitto e faça o download do instalador para o seu sistema operacional.
+
+2. **Acesse a pasta do Mosquitto**:
+   - Navegue até a pasta onde o Mosquitto foi instalado (ex_windows: `C:\Program Files\mosquitto`).
+
+### Configuração do arquivo `mosquitto.conf`
+
+1. **Abra o arquivo `mosquitto.conf`**:
+   - Este é um arquivo de texto que contém várias configurações comentadas.
+
+2. **Entenda as configurações**:
+   - Para ativar uma configuração, remova o `#` do início da linha. 
+   - Exemplo:
+     - Para habilitar o listener na porta 1883, altere:
+       ```plaintext
+       #listener 1883
+       ```
+       para
+       
+       ```plaintext
+       listener 1883
+       ```
+
+3. **Execução sem modificações**:
+   - O Mosquitto pode ser executado sem alterações no arquivo de configuração, mas apenas em `localhost` (127.0.0.1).
+
+### Habilitando Autenticação
+
+1. **Conexão inicial**:
+   - Você pode se conectar ao Mosquitto sem senha, por exemplo, usando um ESP8266.
+
+2. **Habilite a autenticação**:
+   - Descomente as seguintes linhas no `mosquitto.conf`:
+     ```plaintext
+     #anonymous true
+     #password_file /path/to/passwordfile
+     ```
+   - Altere para:
+     ```plaintext
+     anonymous false
+     password_file caminho/do/arquivo/de/senha
+     ```
+
+## Observações Importantes
+
+- Apenas as linhas que têm espaço antes do `#` são configurações válidas para serem alteradas. 
+- Por exemplo, o caso 1 pode ser modificado
+     ```plaintext
+      # list (caso 1)
+      #list (caso 2)
+     ```
+
+### Configurando o Firewall
+
+1. **Acesse o Firewall do Windows**:
+   - Abra o menu Iniciar e digite `wf.msc` para abrir o Gerenciador de Firewall do Windows.
+
+2. **Criar nova regra**:
+   - Clique em "Regras de Entrada" (canto superior esquerdo) e depois em "Nova Regra" (canto superior direito).
+
+3. **Configuração da porta**:
+   - Selecione "Porta", clique em "Avançar", selecione "TCP" e insira "1883" no campo de porta.
+   - Clique em "Avançar" até concluir, nomeando a regra como "mqtt".
