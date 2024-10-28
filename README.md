@@ -100,8 +100,73 @@ Agora temos outro problema: Quando eu envio um dado para o Broker todos os clien
       # list (caso 1)
       #list (caso 2)
      ```
+## Verificando o Funcionamento do Mosquitto
+
+### Usando MQTT Explorer
+
+1. **Baixe e Instale**: 
+   - Uma das maneiras mais simples de verificar a conexão MQTT é usar uma interface gráfica. Recomendo o [MQTT Explorer](https://mqtt-explorer.com/).
+   
+2. **Assine um Tópico**:
+   - Após abrir o MQTT Explorer, inscreva-se em um tópico de sua escolha, por exemplo, `\teste`.
+
+3. **Publique uma Mensagem**:
+   - Utilize outra interface (como o CMD) ou um cliente MQTT separado para publicar uma mensagem no mesmo tópico (`\teste`).
+
+   **Observação**: Se ambas as interfaces estiverem rodando no mesmo dispositivo e você conseguir enviar e receber mensagens, a configuração local do broker está funcionando corretamente.
+
+4. **Teste com Outro Dispositivo**:
+   - Para uma validação mais robusta, tente conectar a partir de outro dispositivo externo a rede (telefone por exmeplo tem apps). Se funcionar, ótimo! Se não, o broker pode estar configurado para escutar apenas `localhost` (127.0.0.1).
+
+### Ajustando Configurações do Broker
+
+Se você precisar que o Mosquitto aceite conexões de outros dispositivos, siga estas etapas:
+
+1. **Localize o Arquivo de Configuração**:
+   - Vá até a pasta onde o Mosquitto está instalado, tipicamente em `C:\Program Files\mosquitto\` e abra o arquivo `mosquitto.conf`.
+
+2. **Modifique o Arquivo de Configuração**:
+   - Encontre e ajuste as seguintes linhas:
+
+     ```plaintext
+     bind_address 127.0.0.1  # Remova ou comente esta linha para permitir conexões externas
+     listener 1883 #Porta onde o broler está ouvind
+     allow_anonymous false  # Para permitir conexões anônimas (sem credenciais), mude para true
+     password_file C:\Program Files\mosquitto\pwfile.example  # Este arquivo é para autenticação
+     ```
+
+3. **Reinicie o Mosquitto**:
+   - Para aplicar as mudanças, você precisará salvar as mudanças e reiniciar o serviço do Mosquitto. Faça isso através do Painel de Serviços do Windows:
+
+     ```plaintext
+     >> Serviços >> Mosquitto >> Parar >> Iniciar
+     ```
+
+4. **Verifique o Firewall**:
+   - Se você ainda tiver problemas de conexão fora da rede local, pode ser que o firewall esteja bloqueando a porta 1883. Verifique as configurações do firewall para garantir que ele permita conexões na porta MQTT (Falo mais embaixo).
+
+### Usando o CMD para Testes
+
+1. **Publicar uma Mensagem**:
+   Uma alternativa para softwares externos é rodar clientes em abas do cmd...
+   
+   - Navegue até a pasta onde o Mosquitto está instalado e use o seguinte comando para publicar uma mensagem:
+
+     ```bash
+     mosquitto_pub -h 127.0.0.1 -t "seu/topico" -m "Sua mensagem aqui"
+     ```
+
+3. **Inscrever-se em um Tópico**:
+   - Da mesma forma, você pode se inscrever em um tópico com o comando:
+
+     ```bash
+     mosquitto_sub -h 127.0.0.1 -t "seu/topico"
+     ```
+⚠️Obs: Abas diferentes do CMD
 
 ### Configurando o Firewall
+
+OSS: Caso a comunicação esteja funcionando apenas localmente libere a conexão nessa porta nas configurações do Firewall
 
 1. **Acesse o Firewall do Windows**:
    - Abra o menu Iniciar e digite `wf.msc` para abrir o Gerenciador de Firewall do Windows.
@@ -112,3 +177,22 @@ Agora temos outro problema: Quando eu envio um dado para o Broker todos os clien
 3. **Configuração da porta**:
    - Selecione "Porta", clique em "Avançar", selecione "TCP" e insira "1883" no campo de porta.
    - Clique em "Avançar" até concluir, nomeando a regra como "mqtt".
+
+### OUTRA FORMA DE VER A COMUNICAÇÃO DO BROKER:
+
+Digite no CMD:
+
+```bash
+    netstat -ano | findstr :1883
+```
+
+```bash
+  TCP    0.0.0.0:1883           0.0.0.0:0              LISTENING       3752
+  TCP    192.168.1.2:1883       192.168.1.2:61095      ESTABLISHED     3752
+  TCP    192.168.1.2:1883       192.168.1.6:40668      ESTABLISHED     3752
+  TCP    192.168.1.2:61095      192.168.1.2:1883       ESTABLISHED     24396
+  TCP    [::]:1883              [::]:0                 LISTENING       3752
+```
+Basicamente está informando que a porta está liberada para qualquer conexão e que está ouvindo, além de mostratar algumas interações....
+
+Vamos entender melhor: 
